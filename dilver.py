@@ -33,7 +33,7 @@ if __name__ == '__main__':
     import cortar
     import subprocess
 
-    subprocess.Popen("rm -r ./renglones/words_reng*", shell=True) 
+    subprocess.Popen("rm -r ./renglones/*", shell=True) 
     subprocess.Popen("rm ./renglones/*", shell=True)
     img = cv2.imread("in/6.jpg")
     img2 = bin.binar(np.copy(img), 200)
@@ -57,14 +57,35 @@ if __name__ == '__main__':
         #Separar palabras y obtener coordenadas
         im2,c2 = dilver(im2,5,10)
 
+        #NO MOVER (si no se crean antes los directorios no se guardan las imagenes)
+        for j in range(c2.shape[0]):
+            subprocess.Popen("mkdir ./renglones/words_reng"+ str(i) +
+                             "/chars_word" + str(j), shell=True) 
+
         #Ciclo para obtener cada imagen de cada palabra
         for j in range(c2.shape[0]):
             z = c2[j,:]
-            #print (z)
             f = im[:,int(z[0]):int(z[1])]
             #cv2.imshow("palabra",f)
             #cv2.waitKey(0)
             cv2.imwrite("./renglones/words_reng" + str(i) + "/word" + str(j) + ".jpg", f)
+            #Binarizarlo
+            f2 = bin.binar(np.copy(f), 200)
+            #Dilatarlo (para hacer mejor los cortes)
+            #f2 = cv2.dilate(f2,kern)
+            #Separar palabras y obtener coordenadas
+            f2,c3 = dilver(f2,5,3)
+            #cv2.imshow("letra",f2)
+            #cv2.waitKey(0)
+
+            for k in range(c3.shape[0]):
+                y = c3[k,:]
+                g = f[:,int(y[0]):int(y[1])]
+                #cv2.imshow("palabra",f)
+                #cv2.waitKey(0)
+                cv2.imwrite("./renglones/words_reng" + str(i) + "/chars_word" +
+                            str(j) + "/char" + str(k) + ".jpg", g)
+
 
 
 
