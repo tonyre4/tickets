@@ -10,6 +10,8 @@ def binar(img,th):
     #img = cv2.cvtColor(img_to_yuv, cv2.COLOR_YUV2BGR)
     row,col = img.shape
 
+    img = cv2.blur(img,(3,3))
+
     print(row,col)
     for i in range(row):
         for j in range(col):
@@ -27,8 +29,8 @@ def binar(img,th):
 
 #test
 if __name__ == '__main__':
-    img = cv2.imread("in/4.jpg",1)
+    img = cv2.imread("in/2.jpg",1)
     cv2.imshow("Orig",img)
-    img = binar(img, 128)
+    img = binar(img, 200)
     cv2.imshow("Bin", img)
     cv2.waitKey(0)
